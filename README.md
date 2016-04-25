@@ -1,4 +1,4 @@
-# net-jam
+# NetJam
 
 This is the source code of the NetJam web application.
 
