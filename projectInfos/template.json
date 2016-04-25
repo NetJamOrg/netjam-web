@@ -1,1 +1,20 @@
-{"tracks":{"0":{"id":0,"name":"Untitled0","length":240,"clips":{"0":{"start":0,"length":2,"id":1},"1":{"start":5,"length":2,"id":1}}},"1":{"id":1,"name":"Untitled1","length":240,"clips":{"0":{"start":2,"length":2,"id":1}}},"2":{"id":2,"name":"Untitled2","length":240,"clips":{}},"3":{"id":3,"name":"Untitled3","length":240,"clips":{}},"4":{"id":4,"name":"Untitled4","length":240,"clips":{}},"5":{"id":5,"name":"Untitled5","length":240,"clips":{}},"7":{"id":7,"name":"Untitled 7"}},"length":240,"clips_end":50,"num":0}
+{
+  "greatest_track_id": 3,
+  "num": 0,
+  "clips_end": 50,
+  "length": 50,
+  "tracks": {
+    "3": {
+      "id": 3,
+      "name": "Untitled3"
+    },
+    "2": {
+      "id": 2,
+      "name": "Untitled2"
+    },
+    "1": {
+      "id": 1,
+      "name": "Untitled1"
+    }
+  }
+}

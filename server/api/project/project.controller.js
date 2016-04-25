@@ -18,9 +18,10 @@ import { User,
 import config from "../../config/environment"
 
 var fs = require('fs');
+var path = require('path');
 
-var newProjContents = '{"clips_end":50,"length":240,"tracks":{"5":{"clips":{},"length":240,"name":"Untitled5","id":5},"4":{"clips":{},"length":240,"name":"Untitled4","id":4},"3":{"clips":{},"length":240,"name":"Untitled3","id":3},"2":{"clips":{},"length":240,"name":"Untitled2","id":2},"1":{"clips":{},"length":240,"name":"Untitled1","id":1},"0":{"clips":{"1":{"id":1"length":2,"start":20},"0":{"id":1"length":2,"start":13}},"length":240,"name":"Untitled0","id":0}}}';
-
+var newProjContents = fs.readFileSync(path.join(config.root, config.diffSync.projectJSONDirectory, "template.json"));
+console.log(newProjContents);
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
@@ -132,8 +133,9 @@ export function create(req, res) {
   })
     .then((project) => {
       project.addUser(req.user, {access: 2});
-      project.pathToFile = config.root + "/projectInfos/" + project._id + '.json';
-      fs.writeFileSync(project.pathToFile, newProjContents, 'utf8');
+      var newProjPath = path.join(config.root, config.diffSync.projectJSONDirectory, project._id + '.json');
+      fs.writeFileSync(newProjPath, newProjContents);
+      project.pathToFile = project._id + '.json';
       return project.save();
     })
     .then(respondWithResult(res, 201))
