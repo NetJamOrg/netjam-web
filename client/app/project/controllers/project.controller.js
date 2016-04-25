@@ -22,6 +22,8 @@ app.controller('ProjectController', ['$scope', '$stateParams', 'DiffSyncService'
         // $scope.project.clips_end = 0;
 
 
+        $scope.aud = new Audio();
+
         // TODO: Replace with actual service call to retrieve project data
 
         // var newTrack = { id: 0, name: 'Untitled ' + 0 };
@@ -180,23 +182,25 @@ app.controller('ProjectController', ['$scope', '$stateParams', 'DiffSyncService'
 
             if (this.paused) {
                 // play
-                console.log('pausing');
+                console.log('playing');
                 $http({ method: 'GET', url: '/api/projects/' + $stateParams.projectId + '/song' }).then(function(data) {
                         console.log('success', data.data._id);
-                        $http({ method: 'GET', url: '/api/songs/' + data.data._id + '/file' }, function(data) {
-                            var url = '/songStorage/' + data.name;
-                            console.log('success', url);
-                            var aud = new Audio(url);
-                            aud.play();
-                        }, function(err) {
-                            console.log('error', err);
-                        });
-                    },
-                    function() {
-                        console.log('error');
-                    });
+                  $http({ method: 'GET', url: '/api/songs/' + data.data._id + '/file' }).then(function(data) {
+                    var url = '/songStorage/' + data.data.name;
+                    console.log('success', url);
+                    $scope.aud = new Audio(url);
+                    $scope.aud.type = 'audio/wav';
+                    $scope.aud.play();
+                  }, function(err) {
+                    console.log('error', err);
+                  });
+                },
+                function() {
+                  console.log('error');
+                });
             } else {
-                // pause
+              // pause
+                $scope.aud.pause();
                 console.log('pausing');
             }
             this.paused = !this.paused;
