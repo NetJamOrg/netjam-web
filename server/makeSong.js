@@ -34,7 +34,13 @@ var makeSong = function(song, callback) {
       for(var track of tracks) {
         if(!track.clips) continue;
         var clipsObj = track.clips;
-        var clips = Object.keys(clipsObj).map(key => clipsObj[key]);
+        var clipsUnordered = Object.keys(clipsObj).map(key => clipsObj[key]);
+	var clips = clipsUnordered.sort(function(a, b) {
+	    if(a.start < b.start) return -1;
+	    if(a.start > b.start) return 1;
+	    else return 0;
+	});
+
         console.log(clips);
         if(clips.length == 0) continue;
         if(clips.length == 1) {
