@@ -1,0 +1,92 @@
+.container
+  .row
+    .col-sm-12
+      h1 Change Password
+    .col-sm-12
+      form.form(name='form', ng-submit='vm.changePassword(form)', novalidate='')
+        .form-group
+          label Current Password
+          input.form-control(type='password'
+            name='password'
+            ng-model='vm.user.oldPassword'
+            mongoose-error='')
+          p.help-block(ng-show='form.password.$error.mongoose')
+            | {{ vm.errors.other }}
+        .form-group
+          label New Password
+          input.form-control(type='password'
+            name='newPassword'
+            ng-model='vm.user.newPassword'
+            ng-minlength='3', required='')
+          p.help-block(ng-show='(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || vm.submitted)')
+            | Password must be at least 3 characters.
+        .form-group
+          label Confirm New Password
+          input.form-control(type='password'
+            name='confirmPassword'
+            ng-model='vm.user.confirmPassword'
+            match="vm.user.newPassword"
+            ng-minlength='3', required='')
+          p.help-block(ng-show='fvm.orm.confirmPassword.$error.match && vm.submitted')
+            | Passwords must match.
+
+        p.help-block.pull-right  {{ vm.message }}
+        br
+        br
+        button.btn.btn-lg.btn-primary.pull-right(type='submit') Save new password
+  br
+  br
+  .row
+    .col-sm-12
+      h1 Profile Settings
+    .col-sm-12
+      form.form(name='form', ng-submit='vm.updateProfile(form)', novalidate='')
+        .form-group
+          label Avatar Image
+          input.form-control(
+            name='avatar'
+            ng-model='vm.profile.$$state.value.avatarImgPath' type='text')
+
+        .form-group
+          label Background Image
+          input.form-control(
+            name='background'
+            ng-model='vm.profile.$$state.value.backgroundImgPath' type='text')
+
+        .form-group
+          label Short Message
+          input.form-control(
+            name='shortMsg'
+            ng-model='vm.profile.$$state.value.shortmessage' type='text')
+
+        .form-group
+          label Website
+          input.form-control(
+            name='websiteURL'
+            ng-model='vm.profile.$$state.value.website' type='text')
+
+        .form-group
+          label Biography
+          input.form-control(
+            name='biography'
+            ng-model='vm.profile.$$state.value.bio' type='text')
+
+        .form-group
+          label Twitter Profile
+          input.form-control(
+            name='twitterProfile'
+            ng-model='vm.profile.$$state.value.twitterProfile' type='text')
+
+          .form-group
+          label Facebook Page
+          input.form-control(
+            name='facebookProfile'
+            ng-model='vm.profile.$$state.value.facebookProfile' type='text')
+
+        p.help-block.pull-right  {{ vm.messageProfile.$$state.value }}
+        br
+        br
+        button.btn.btn-lg.btn-primary.pull-right(type='submit') Save changes
+br
+br
+br

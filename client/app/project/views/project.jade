@@ -1,0 +1,18 @@
+section(ng-controller="ProjectController")#project
+	div.project-btns(ng-show='location.path().indexOf("project") > -1')
+		span.play-btn(ng-class='{ "glyphicon glyphicon-play paused" : paused, "glyphicon glyphicon-pause" : !paused}', ng-click='pausePlay()')
+	div.work-station
+		div.control-panels
+			div.control-panel(ng-repeat="track in project.tracks track by $index")
+				div.track-name {{track.name}}
+				div.btns
+					button.btn.btn-danger(ng-click="removeTrack(track.id)") x
+		div.tracks
+			div.track(id="{{'track' + $index}} " ng-repeat="track in project.tracks track by $index")
+				div.cell(ng-repeat="i in getNumber(project_cells) track by $index")
+				div.clip-wrapper(class="ui-widget-header")
+					my-clip(class="draggable clip" ppb="pref.PPB" ng-repeat="clip in track.clips track by $index" project="project" clip="$index" track="track.id")
+	md-button#add-track.md-fab.md-primary(ng-click = "addTrack()")
+		span +
+	md-button#modal-pop.md-fab.md-primary(ng-click = "openRecord()")
+		span R

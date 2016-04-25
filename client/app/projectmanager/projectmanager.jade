@@ -1,0 +1,114 @@
+section(ng-show="dataLoaded")#projectmanager
+    div.container
+        div.panel-heading
+            h1
+                | Your Projects
+            span.pull-right
+                //- button#loading-btn.btn.btn-warning.btn-xs(type='button')
+                    i.fa.fa-refresh
+                    |  Refresh
+                a.btn.btn-success.btn-xs(ng-click="openNewProjectModal()")
+                    i.fa.fa-plus
+                    |  New Project
+
+        
+        table.table.table-hover.p-table
+            thead
+                tr
+                    th Project Name
+                    th Team Members
+                    //- th Project Progress
+                    th(style="text-align:center") Project Status
+                    th(style="padding-left:15px") Actions
+            tbody
+                tr(ng-repeat="p in projectslist track by $index")
+                    td.p-name
+                        span(style="font-weight:700") {{p.name}}
+                        br
+                        small Created {{p.createdAt}}
+                    td.p-team
+                        a(ng-repeat="c in p.collabs" title='{{c.name}}' href='/profile/{{c._id}}' )
+                            img(alt='{{c.name}}', src='{{c.avatarImgPath}}')
+
+                    td(style="text-align:center")
+                        span.label.label-primary(ng-show="p.isActive")
+                            | Active
+                        span.label.label-default(ng-hide="p.isActive")
+                            | Inactive
+                    td
+                        a.btn.btn-primary.btn-xs(href='/project/{{p._id}}')
+                            i.fa.fa-folder
+                            |  View
+                        a.btn.btn-info.btn-xs(ng-click='openEditProjectModal(p._id)' ng-show='p.isOwner')
+                            i.fa.fa-cog
+                            |  Settings
+                        a.btn.btn-danger.btn-xs(ng-click='deleteProject(p._id)' ng-show='p.isOwner')
+                            i.fa.fa-trash-o
+                            |  Delete
+
+
+  script(type='text/ng-template', id='newprojectmodal.html')
+    form.form(name='form', ng-submit='createNewProject()', novalidate='')
+        div.modal-header
+          h3.modal-title New Project
+        div.modal-body
+                .form-group
+                    label Project Name
+                    input.form-control(
+                        name='avatar'
+                        ng-model='projectName' type='text')
+                    | A name used to identify the project
+
+        div.modal-footer
+            span(ng-if="results")
+                p.help-block.pull-left(style="color:green" ng-show="success") Successfully created project!
+                p.help-block.pull-left(style="color:red" ng-hide="success") Failed to create project! Try again later..
+            button.btn.btn-primary(type='submit') Create
+            button.btn.btn-primary(type="button" ng-click="close()") Cancel
+
+  script(type='text/ng-template', id='editprojectmodal.html')
+    div.modal-header
+      h3.modal-title Edit Project
+    div.modal-body
+        .form-group
+            label Project Name
+            input.form-control(
+                name='avatar'
+                ng-model='projectData.name' type='text' disabled="true")
+
+        table.table.table-hover.p-table
+            thead
+                tr
+                    th Team Members
+                    th(style="text-align:right") Permissions
+                    th(style="text-align:right") Remove
+            tbody
+                tr(ng-repeat="c in projectData.collabs track by c._id" ng-if="c._id != currentUserId")
+                    td.p-team
+                        a(title='{{c.name}}' href='/profile/{{c._id}}')
+                            img(alt='{{c.name}}', src='{{c.avatarImgPath}}')
+                        a(title='{{c.name}}' href='/profile/{{c._id}}' style="font-weight:700")
+                            |  {{c.name}}
+                    td(style="text-align:right")
+                        select(ng-model="userPerm[c._id]" ng-change="editUserPermission(c._id, userPerm[c._id])")
+                            option(style="display:none" value="") View Only
+                            option(ng-repeat="perm in permissions" value="{{perm.id}}" ng-selected="(perm.id == c.collabaccess.access) ? true : false") {{perm.val}}
+
+                    td(style="text-align:right")
+                        a.btn.btn-danger.btn-sm(ng-click="deleteUser(c._id)")
+                            i.fa.fa-trash-o
+
+                tr.add-new
+                    td
+                        input.form-control(ng-model="newUserName" placeholder="New user's name...")
+                    td
+                    td(style="text-align:right")
+                        a.btn.btn-success.btn-sm(ng-click="addUser()")
+                            i.fa.fa-plus
+
+
+    div.modal-footer
+        span(ng-if="resultsedit")
+            p.help-block.pull-left(style="color:green" ng-show="successedit") Successfully updated project!
+            p.help-block.pull-left(style="color:red" ng-hide="successedit") Failed to update project! Try again later..
+        button.btn.btn-primary(type="button" ng-click="close()") Close

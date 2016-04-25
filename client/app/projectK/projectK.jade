@@ -1,0 +1,22 @@
+section#projectK
+	#viz
+	canvas#analyser(width='1024', height='200',)
+	canvas#wavedisplay(width='1024', height='200')
+	#controls
+		img#record(src='assets/images/mic128.png', ng-class="{recording: $scope.recording == true}", ng-click='startRecording()')
+		a#save(href='#')
+			img(src='assets/images/save.png')
+		img#upload(src='assets/images/upload128.png', ng-click='uploadFile()')
+		span#trackSel(ng-click='incrTrack()')
+			| Track: {{ctrackval}}
+		span#close(ng-click='ok()')
+			| Close
+
+
+	//- div.control-panels
+	//- 	div.control-panel(ng-repeat="track in project_cells.tracks track by $index") {{track.name}}
+	//- div.tracks
+	//- 	div.track(ng-repeat="track in projects.tracks track by $index")
+	//- 		div.cell(ng-repeat="i in getNumber(project_cells) track by $index")
+	//- md-button.md-fab.md-primary.add-track
+	//- 	md-icon circle

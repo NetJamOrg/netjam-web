@@ -1,0 +1,118 @@
+section(ng-if="dataLoaded")#profile
+  div.container
+    div.nj-prof(style="background: url( {{profile.backgroundImgPath}} )")
+      div.nj-prof-head
+        img(src="{{profile.avatarImgPath}}").nj-image-prof.thumbnail
+        div.nj-prof-text
+          h1
+            | {{profile.name}}
+          br
+          p
+            | {{profile.shortmessage}}
+
+      button().nj-media-button.btn.btn-secondary Share
+      button(ng-click="addLikeUser()" ng-hide="isLiked").nj-media-button.btn.btn-secondary Like
+      button(ng-click="removeLikeUser()" ng-show="isLiked").nj-media-button.btn.btn-secondary Unlike
+
+  hr
+  div.container
+    div.row
+    div.row
+      div.col-sm-3
+        ul.list-group
+          li.list-group-item.text-muted Profile
+            li.list-group-item.text-right
+              span.pull-left
+                strong Joined
+              |  {{profile.joined | date:'MMMM yyyy'}}
+            li.list-group-item.text-right
+              span.pull-left
+                strong Last seen
+              |  Yesterday
+          .panel.panel-default
+            .panel-heading
+              | Website
+              i.fa.fa-link.fa-1x
+            .panel-body
+              a(href='{{profile.website}}') {{profile.website}}
+
+          ul.list-group
+            li.list-group-item.text-muted
+              | Bio
+              li.list-group-item
+                | {{profile.bio}}
+
+
+          ul.list-group
+            li.list-group-item.text-muted
+              | Activity
+              i.fa.fa-dashboard.fa-1x
+            li.list-group-item.text-right
+              span.pull-left
+                strong Likes
+              |  {{likescount}}
+            li.list-group-item.text-right
+              span.pull-left
+                strong Songs
+              |  {{songs.length}}
+          .panel.panel-default
+            .panel-heading Social Media
+            .panel-body
+              a(href="#/{{profile.facebookProfile}}" style="margin-right:15px")
+                i.fa.fa-facebook.fa-2x
+              a(href="#/{{profile.twitterProfile}}")
+                i.fa.fa-twitter.fa-2x
+      div.col-sm-9
+        ul#myTab.nav.nav-tabs
+          li.active
+            a(href='#songs', data-toggle='tab') Songs
+        div.tab-content
+          #home.tab-pane.active
+            .table-responsive
+              table.table.table-hover
+                thead
+                  tr
+                    th Name
+                    th Likes
+                    th Collaborators
+                    th
+                    th
+                    th(style="text-align:center") Download
+                tbody#items
+                  tr(ng-repeat="song in songs track by $index")
+                    td {{song.name}}
+                    td {{song.likescount}}
+                    td
+                      span(ng-repeat="user in song.collaborators track by $index")
+                        a(href='/profile/{{user._id}}') {{user.name}}
+                        {{$last ? '' : ', '}}
+                      //- span(ng-repeat="collaborator in songs.")
+                    td
+                    td
+                    td(style="text-align:center")
+                      a(ng-href="/songStorage/{{song._id}}.wav", href)
+                        i.fa.fa-play-circle.fa-6(style='font-size: 24px;')
+              hr
+              .row
+                .col-md-4.col-md-offset-4.text-center
+                  ul#myPager.pagination
+            hr
+            h4 Recent Activity
+            .table-responsive
+              table.table.table-hover
+                tbody
+                  tr(ng-repeat="u in recentactivity.likedusers track by $index")
+                    td Liked a user,
+                      a(href="/profile/{{u._id}}" style="font-weight:700") {{u.name}}
+                      | .
+                  tr(ng-repeat="s in recentactivity.likedsongs track by $index")
+                    td Liked a song,
+                      a(href="/songs/{{s._id}}" style="font-weight:700") {{s.name}}
+                      | .
+                  tr(ng-repeat="s in recentactivity.recentsongs track by $index")
+                    td Helped create a song,
+                      a(href="/songs/{{s._id}}" style="font-weight:700") {{s.name}}
+                      | .
+br
+br
+br
