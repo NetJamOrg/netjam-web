@@ -15,7 +15,7 @@ var makeSong = function(song, callback) {
   var sid = song._id;
   return song.getProject()
     .then((proj) => {
-      var projLoc = path.join(config.root, "projectInfos/" + proj.pathToFile);
+      var projLoc = path.join(config.root, config.diffSync.projectJSONDirectory, proj._id + '.json');
       var projData = JSON.parse(fs.readFileSync(projLoc, 'utf8'));
       // get clips with ids, length, start by track
 

@@ -90,7 +90,7 @@ section(ng-if="dataLoaded")#profile
                     td
                     td
                     td(style="text-align:center")
-                      a(ng-href="/songStorage/{{song._id}}.wav", href)
+                      a(ng-click="playSong(song._id)")
                         i.fa.fa-play-circle.fa-6(style='font-size: 24px;')
               hr
               .row

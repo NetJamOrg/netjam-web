@@ -136,7 +136,17 @@ export function create(req, res) {
       var newProjPath = path.join(config.root, config.diffSync.projectJSONDirectory, project._id + '.json');
       fs.writeFileSync(newProjPath, newProjContents);
       project.pathToFile = project._id + '.json';
-      return project.save();
+      return Song.create({
+        name: "untitled song" + project._id
+      })
+        .then((song) => {
+          project.setSong(song)
+            .then(() => {
+              project.save();
+              res.status(201);
+              res.json(project).end();
+            })
+        })
     })
     .then(respondWithResult(res, 201))
     .catch(handleError(res));

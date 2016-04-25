@@ -50,7 +50,12 @@ FsAdapter.prototype.getData = function(id, callback) {
       }
       else { // not in mem or fs. return "blank" project
         console.log('not in mem or fs');
-        callback(null, newProjContents);
+        Project.find({_id: id})
+          .then((project) => {
+            project.pathToFile = id + '.json';
+            project.save()
+              .then(() => callback(null, newProjContents));
+          });
       }
     });
   }
