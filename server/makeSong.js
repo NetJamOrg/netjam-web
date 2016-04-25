@@ -39,7 +39,9 @@ var makeSong = function(song, callback) {
         if(clips.length == 0) continue;
         if(clips.length == 1) {
           var clip = clips[0];
-          child_process.exec('sox clipStorage/' + clip.id + '.wav -p pad ' + measToTime(clip.start) + ' 0 > /tmp/' + sid + track.id + '.wav', {cwd: config.root});
+          var cmd = 'sox clipStorage/' + clip.id + '.wav -p pad ' + measToTime(clip.start) + ' 0 > /tmp/' + sid + track.id + '.wav';
+          console.log('1 clip: exec ' + cmd)
+          child_process.exec(cmd, {cwd: config.root});
           continue;
         }
         // concat all clips in a track with padding as:
@@ -116,7 +118,7 @@ var makeSong = function(song, callback) {
 
 function measToTime(n) {
   // 120 b/min, 4b/meas
-  return n * (4/120) * 60;
+  return n * ((4.0/120.0) * 60.0);
 }
 
 module.exports = makeSong;

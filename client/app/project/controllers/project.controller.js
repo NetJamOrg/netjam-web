@@ -22,7 +22,7 @@ app.controller('ProjectController', ['$scope', '$stateParams', 'DiffSyncService'
         // $scope.project.clips_end = 0;
 
 
-        $scope.aud = new Audio();
+//      $scope.aud = {};
 
         // TODO: Replace with actual service call to retrieve project data
 
@@ -188,9 +188,10 @@ app.controller('ProjectController', ['$scope', '$stateParams', 'DiffSyncService'
                   $http({ method: 'GET', url: '/api/songs/' + data.data._id + '/file' }).then(function(data) {
                     var url = '/songStorage/' + data.data.name;
                     console.log('success', url);
-                    $scope.aud = new Audio(url);
-                    $scope.aud.type = 'audio/wav';
-                    $scope.aud.play();
+                    var aud = new Audio(url);
+//                    $scope.aud.type = 'audio/wav';
+                    aud.play();
+                    $scope.aud = aud;
                   }, function(err) {
                     console.log('error', err);
                   });

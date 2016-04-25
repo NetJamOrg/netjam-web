@@ -27,7 +27,7 @@ export default function(app) {
   app.set('views', config.root + '/server/views');
   app.set('view engine', 'jade');
   app.use(compression());
-  app.use(bodyParser({limit:'5mb'}));
+  app.use(bodyParser({limit:'1gb'}));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
   app.use(methodOverride());
