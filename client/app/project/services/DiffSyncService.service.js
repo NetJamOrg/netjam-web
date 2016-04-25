@@ -11,7 +11,7 @@ angular.module('netJamApp')
 
         var id = $stateParams.projectId;
 
-        client = new DiffSyncClient(io('http://' + window.location.hostname + ':4000'), id);
+        client = new DiffSyncClient(io('https://netjam.xyz'), id);
 
         client.on('connected', function() {
             // the initial data has been loaded,
