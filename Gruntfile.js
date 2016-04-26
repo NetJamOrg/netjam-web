@@ -628,7 +628,8 @@ module.exports = function (grunt) {
             return (aMod === bMod) ? 0 : (aMod ? -1 : 1);
           },
           starttag: '<!-- injector:js -->',
-          endtag: '<!-- endinjector -->'
+          endtag: '<!-- endinjector -->',
+	  lineEnding: grunt.util.linefeed
         },
         files: {
           '<%= yeoman.client %>/index.html': [

@@ -1,6 +1,7 @@
 'use strict';
 
 angular.module('netJamApp', [
+  'ui.router',
   'netJamApp.auth',
   'netJamApp.admin',
   'netJamApp.constants',
@@ -8,7 +9,6 @@ angular.module('netJamApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ui.router',
   'ui.bootstrap',
   'validation.match',
   'ngMaterial'
