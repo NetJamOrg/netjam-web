@@ -45,7 +45,7 @@ var makeSong = function(song, callback) {
         if(clips.length == 0) continue;
         if(clips.length == 1) {
           var clip = clips[0];
-          var cmd = 'sox clipStorage/' + clip.id + '.wav -p pad ' + measToTime(clip.start) + ' 0 > /tmp/' + sid + track.id + '.wav';
+          var cmd = 'sox clipStorage/' + clip.id + '.wav -p pad ' + measToTime(clip.start) + ' 0 | sox - /tmp/' + sid + track.id + '.wav';
           console.log('1 clip: exec ' + cmd)
           child_process.exec(cmd, {cwd: config.root});
           continue;
