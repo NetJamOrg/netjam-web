@@ -12,6 +12,12 @@ var diffSyncStuff = function(app) {
   var io       = require('socket.io')(http);
   var diffSync = require('diffsync');
 
+  // allow access only if logged in
+  io.use(require('socketio-jwt').authorize({
+    secret: config.secrets.session,
+    handshake: true
+  }));
+
   var dataAdapter = new FsAdapter();
 
   // setting up the diffsync server
