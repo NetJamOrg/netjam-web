@@ -4,7 +4,7 @@
 
 'use strict';
 
-import express from 'express';
+var express =  require('express');
 import sqldb from './sqldb';
 import config from './config/environment';
 import http from 'http';

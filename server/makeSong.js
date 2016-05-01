@@ -34,7 +34,13 @@ var makeSong = function(song, callback) {
       for(var track of tracks) {
         if(!track.clips) continue;
         var clipsObj = track.clips;
-        var clips = Object.keys(clipsObj).map(key => clipsObj[key]);
+        var clipsUnordered = Object.keys(clipsObj).map(key => clipsObj[key]);
+  var clips = clipsUnordered.sort(function(a, b) {
+      if(a.start < b.start) return -1;
+      if(a.start > b.start) return 1;
+      else return 0;
+  });
+
         console.log(clips);
         // convert each to 32khz sample rate
         clips.forEach(c => {
@@ -44,6 +50,7 @@ var makeSong = function(song, callback) {
         if(clips.length == 0) continue;
         if(clips.length == 1) {
           var clip = clips[0];
+
           var cmd = 'sox clipStorage/' + clip.id + '.wav -p pad ' + measToTime(clip.start) + ' 0 | sox - -r 32000 /tmp/' + sid + track.id + '.wav';
           console.log('1 clip: exec ' + cmd)
           child_process.exec(cmd, {cwd: config.root});

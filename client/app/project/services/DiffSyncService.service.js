@@ -14,8 +14,6 @@ angular.module('netJamApp')
     //   return that;
     // }
 
-
-
     var DiffSyncClient = diffsync.Client;
     var client, data;
 
@@ -35,7 +33,7 @@ angular.module('netJamApp')
       console.log('authed ' + JSON.stringify(authed));
 
       if(authed) {
-        client = new DiffSyncClient(io('http://' + window.location.hostname + ':4000',
+        client = new DiffSyncClient(io('//' + window.location.hostname + ':4000',
                                        {
                                          query: 'token=' + tok,
                                        }), id);
