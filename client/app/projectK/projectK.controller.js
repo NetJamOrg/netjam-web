@@ -75,6 +75,7 @@ app.controller('ProjectK', ['$scope', '$http', '$uibModalInstance', 'DiffSyncSer
       }
     }
   }
+  $scope.addClip = addClip;
 
   // Finds first open spot long enough for track
   // TODO: Test

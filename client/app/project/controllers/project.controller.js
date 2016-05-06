@@ -141,6 +141,7 @@ app.controller('ProjectController',
                     return ($scope.project.greatest_track_id ? $scope.project.greatest_track_id : 0);
                   };
 
+
                   $scope.addTrack = function() {
                     var id = getGreatestTrackId() + 1;
                     $scope.project.greatest_track_id++;

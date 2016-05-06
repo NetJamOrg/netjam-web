@@ -29,8 +29,22 @@ app.directive('myClip', ['$rootScope', 'DiffSyncService',
                 element.css('width', clip.length * cell_length);
                 element.css('background', colors[tracknum % colors.length]);
 
+              element.on('click', function(e) {
+                console.log('click', e);
+                if(e.ctrlKey) {
+                  addClip(clip.id, tracknum, clip.length);
+                  DiffSyncService.update();
+                  $rootScope.$broadcast('new synced data', scope.project);
+                }
+                else if(e.altKey) {
+                  removeClip(scope.clip, tracknum);
+                  DiffSyncService.update();
+                  $rootScope.$broadcast('new synced data', scope.project);
+                }
+              });
+
                 element.on('mousedown', function() {
-                    $(this).removeClass('clip');
+                  $(this).removeClass('clip');
                 });
 
                 element.on('mouseup', function() {
@@ -45,6 +59,89 @@ app.directive('myClip', ['$rootScope', 'DiffSyncService',
                     element.css('width', clip.length * cell_length);
                     element.css('background', colors[tracknum % colors.length]);
                 }, true);
+
+              var removeClip = function(clipNum, trackId) {
+                var track = scope.project.tracks[trackId];
+                delete track.clips[clipNum];
+              };
+
+              var addClip = function (clipID, trackID, clipLength) {
+                console.log(scope.project);
+                var spot = firstOpen(scope.project.tracks[trackID], clipLength, scope.project.length);
+                if(spot >= 0 ) {
+                  var tmp = 0;
+                  if(scope.project.tracks[trackID].clips) {
+                    tmp = Object.getOwnPropertyNames(
+                      scope.project.tracks[trackID].clips).length - 1;
+                    tmp = Object.getOwnPropertyNames(
+                      scope.project.tracks[trackID].clips)[tmp];
+                    if(tmp ===  undefined || tmp === null) {
+                      tmp = -1;
+                    }
+                    tmp = parseInt(tmp) + 1;
+                  }
+                  else {
+                    scope.project.tracks[trackID].clips = {};
+                  }
+
+                  var data = {
+                    start: spot,
+                    length: clipLength,
+                    id: clipID
+                  };
+                  scope.project.tracks[trackID].clips[tmp] = data;
+                  console.log("added clip " + JSON.stringify({
+                    start: spot,
+                    length: clipLength,
+                    id: clipID
+                  }));
+                  console.log(scope.project);
+                  return 1;
+                }
+                else {
+                  console.log("no spot for clip");
+                  return -1;
+                }
+              };
+
+              function firstOpen(track, clength, projlength) {
+                console.log('firstOpen');
+                console.log(projlength);
+                var spaces = new Array(projlength);
+                console.log(track);
+                var clipnum;
+                if(track.clips) {
+                  clipnum = Object.getOwnPropertyNames(track.clips).length;
+                }
+                else {
+                  clipnum = 0;
+                }
+                for(var i=0; i<clipnum; i++) {
+                  console.log(track.clips[i]);
+                  var cstart = track.clips[i].start
+                  var clen = track.clips[i].length;
+
+                  for(var j=cstart; j<cstart+clen; j++) {
+                    spaces[j] = 1;
+                  }
+                }
+
+                var fit = true;
+                for(var i=0; i<projlength; i++) {
+                  fit = true;
+                  if(!spaces[i]) {
+                    for(var j=0; j<clength; j++) {
+                      if(spaces[i+j])
+                        fit = false;
+                    }
+                    if(fit) {
+                      return i;
+                    }
+                  }
+                }
+                return -1;
+              }
+
 
                 // Almost certainly TODO: dynamicaly adjusting the segment after BPM change?
                 var trackid = '#track' + scope.track;
