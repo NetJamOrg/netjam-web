@@ -1,6 +1,6 @@
 # NetJam
 
-This is the source code of the NetJam web application.
+This is the source code of the NetJam web application. Aims to be the google docs of audio editing and mixing. Built with react and redux. See https://github.com/NetJamOrg/netjam-api for API repo.
 
 ## Getting Started
 
